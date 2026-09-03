@@ -23,7 +23,7 @@ jobs:
         run: bun install --frozen-lockfile
 
       - name: Generate Prisma Client
-        run: bun run build
+        run: bun run --env-file=.env.test build
 
       - name: Typecheck
         run: bun run typecheck
