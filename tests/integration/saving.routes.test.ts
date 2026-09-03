@@ -22,8 +22,8 @@ describe('Saving routes', () => {
       const { user: otherUser } = await insertUser()
       const token = await getAccessToken(user.id)
 
-      const first = await insertSavingsGoal(user.id, { name: 'Dana Darurat' })
-      const second = await insertSavingsGoal(user.id, { name: 'Liburan' })
+      const first = await insertSavingsGoal(user.id, { name: 'Dana Darurat',createdAt: new Date("2025-01-01T00:00:00Z"), })
+      const second = await insertSavingsGoal(user.id, { name: 'Liburan', createdAt: new Date("2025-06-01T00:00:00Z"), })
       await insertSavingsGoal(otherUser.id, { name: 'Punya Orang Lain' })
 
       const res = await app.request('/v1/savings', { headers: authCookieHeader(token) })

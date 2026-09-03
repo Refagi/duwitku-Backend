@@ -8,7 +8,8 @@ export async function insertSavingsGoal(
     targetAmount: number
     currentAmount: number
     targetDate: Date
-    icon: string
+    icon: string,
+    createdAt: Date
   }> = {},
 ) {
   return prisma.savingsGoal.create({
@@ -19,6 +20,7 @@ export async function insertSavingsGoal(
       currentAmount: overrides.currentAmount ?? 0,
       targetDate: overrides.targetDate,
       icon: overrides.icon,
+      ...(overrides.createdAt ? { createdAt: overrides.createdAt } : {}),
     },
   })
 }
