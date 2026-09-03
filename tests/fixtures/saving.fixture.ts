@@ -8,7 +8,7 @@ export async function insertSavingsGoal(
     targetAmount: number
     currentAmount: number
     targetDate: Date
-    icon: string,
+    icon: string
     createdAt: Date
   }> = {},
 ) {
