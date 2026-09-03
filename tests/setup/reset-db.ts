@@ -1,5 +1,5 @@
-import { beforeEach } from "bun:test";
-import { prisma } from "./db-setup.js";
+import { beforeEach } from 'bun:test'
+import { prisma } from './db-setup.js'
 
 export function withCleanDb() {
   beforeEach(async () => {
@@ -11,6 +11,6 @@ export function withCleanDb() {
       prisma.account.deleteMany(),
       prisma.category.deleteMany(),
       prisma.user.deleteMany(),
-    ]);
-  });
+    ])
+  })
 }

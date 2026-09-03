@@ -27,7 +27,11 @@
               "mode": "raw",
               "raw": "{\n  \"name\": \"Refagi\",\n  \"email\": \"refagi@example.com\",\n  \"password\": \"password123\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            }
           },
           "event": [
             {
@@ -52,7 +56,11 @@
               "mode": "raw",
               "raw": "{\n  \"email\": \"refagi@example.com\",\n  \"password\": \"password123\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            }
           },
           "event": [
             {
@@ -78,7 +86,9 @@
           "event": [
             {
               "listen": "test",
-              "script": { "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"] }
+              "script": {
+                "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"]
+              }
             }
           ]
         },
@@ -86,7 +96,11 @@
           "name": "Refresh Token",
           "request": {
             "method": "POST",
-            "url": { "raw": "{{baseUrl}}/auth/refresh-token", "host": ["{{baseUrl}}"], "path": ["auth", "refresh-token"] }
+            "url": {
+              "raw": "{{baseUrl}}/auth/refresh-token",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "refresh-token"]
+            }
           },
           "event": [
             {
@@ -107,19 +121,29 @@
           "request": {
             "method": "GET",
             "description": "TIDAK BISA ditest lewat Postman - Google menolak login dari automated client. Buka URL ini langsung di browser, login, lalu copy cookie accessToken/refreshToken dari DevTools ke Postman Cookie Manager kalau mau lanjut test endpoint lain dengan sesi Google.",
-            "url": { "raw": "{{baseUrl}}/auth/google", "host": ["{{baseUrl}}"], "path": ["auth", "google"] }
+            "url": {
+              "raw": "{{baseUrl}}/auth/google",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "google"]
+            }
           }
         },
         {
           "name": "Logout",
           "request": {
             "method": "POST",
-            "url": { "raw": "{{baseUrl}}/auth/logout", "host": ["{{baseUrl}}"], "path": ["auth", "logout"] }
+            "url": {
+              "raw": "{{baseUrl}}/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
+            }
           },
           "event": [
             {
               "listen": "test",
-              "script": { "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"] }
+              "script": {
+                "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"]
+              }
             }
           ]
         }
@@ -212,7 +236,12 @@
             }
           },
           "event": [
-            { "listen": "test", "script": { "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"] } }
+            {
+              "listen": "test",
+              "script": {
+                "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"]
+              }
+            }
           ]
         },
         {
@@ -236,7 +265,11 @@
           "name": "List Categories",
           "request": {
             "method": "GET",
-            "url": { "raw": "{{baseUrl}}/categories", "host": ["{{baseUrl}}"], "path": ["categories"] }
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            }
           },
           "event": [
             {
@@ -272,8 +305,15 @@
           "request": {
             "method": "POST",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Zakat\",\n  \"type\": \"EXPENSE\"\n}" },
-            "url": { "raw": "{{baseUrl}}/categories", "host": ["{{baseUrl}}"], "path": ["categories"] }
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Zakat\",\n  \"type\": \"EXPENSE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/categories",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"]
+            }
           },
           "event": [
             {
@@ -322,7 +362,11 @@
           "name": "List Transactions",
           "request": {
             "method": "GET",
-            "url": { "raw": "{{baseUrl}}/transactions", "host": ["{{baseUrl}}"], "path": ["transactions"] }
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions"]
+            }
           }
         },
         {
@@ -356,7 +400,11 @@
               "mode": "raw",
               "raw": "{\n  \"accountId\": \"{{accountId}}\",\n  \"categoryId\": \"{{expenseCategoryId}}\",\n  \"type\": \"EXPENSE\",\n  \"amount\": 25000,\n  \"date\": \"2026-08-02\",\n  \"note\": \"Bakso Pak Darto\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/transactions", "host": ["{{baseUrl}}"], "path": ["transactions"] }
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions"]
+            }
           },
           "event": [
             {
@@ -380,7 +428,11 @@
               "mode": "raw",
               "raw": "{\n  \"accountId\": \"{{accountId}}\",\n  \"categoryId\": \"{{incomeCategoryId}}\",\n  \"type\": \"INCOME\",\n  \"amount\": 5000000,\n  \"date\": \"2026-08-01\",\n  \"note\": \"Gaji bulan Agustus\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/transactions", "host": ["{{baseUrl}}"], "path": ["transactions"] }
+            "url": {
+              "raw": "{{baseUrl}}/transactions",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions"]
+            }
           }
         },
         {
@@ -388,7 +440,10 @@
           "request": {
             "method": "PUT",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": { "mode": "raw", "raw": "{\n  \"amount\": 30000,\n  \"note\": \"Bakso Pak Darto (porsi besar)\"\n}" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 30000,\n  \"note\": \"Bakso Pak Darto (porsi besar)\"\n}"
+            },
             "url": {
               "raw": "{{baseUrl}}/transactions/{{transactionId}}",
               "host": ["{{baseUrl}}"],
@@ -416,7 +471,11 @@
           "name": "List Transfers",
           "request": {
             "method": "GET",
-            "url": { "raw": "{{baseUrl}}/transfers", "host": ["{{baseUrl}}"], "path": ["transfers"] }
+            "url": {
+              "raw": "{{baseUrl}}/transfers",
+              "host": ["{{baseUrl}}"],
+              "path": ["transfers"]
+            }
           }
         },
         {
@@ -428,7 +487,11 @@
               "mode": "raw",
               "raw": "{\n  \"fromAccountId\": \"{{accountId}}\",\n  \"toAccountId\": \"{{secondAccountId}}\",\n  \"amount\": 500000,\n  \"date\": \"2026-08-03\",\n  \"note\": \"Pindah ke dompet cash\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/transfers", "host": ["{{baseUrl}}"], "path": ["transfers"] }
+            "url": {
+              "raw": "{{baseUrl}}/transfers",
+              "host": ["{{baseUrl}}"],
+              "path": ["transfers"]
+            }
           },
           "event": [
             {
@@ -453,12 +516,18 @@
               "mode": "raw",
               "raw": "{\n  \"fromAccountId\": \"{{accountId}}\",\n  \"toAccountId\": \"{{secondAccountId}}\",\n  \"amount\": 999999999,\n  \"date\": \"2026-08-03\",\n  \"note\": \"Test saldo tidak cukup\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/transfers", "host": ["{{baseUrl}}"], "path": ["transfers"] }
+            "url": {
+              "raw": "{{baseUrl}}/transfers",
+              "host": ["{{baseUrl}}"],
+              "path": ["transfers"]
+            }
           },
           "event": [
             {
               "listen": "test",
-              "script": { "exec": ["pm.test('Status 400', () => pm.response.to.have.status(400));"] }
+              "script": {
+                "exec": ["pm.test('Status 400', () => pm.response.to.have.status(400));"]
+              }
             }
           ]
         },
@@ -472,12 +541,18 @@
               "mode": "raw",
               "raw": "{\n  \"fromAccountId\": \"{{accountId}}\",\n  \"toAccountId\": \"{{accountId}}\",\n  \"amount\": 10000,\n  \"date\": \"2026-08-03\"\n}"
             },
-            "url": { "raw": "{{baseUrl}}/transfers", "host": ["{{baseUrl}}"], "path": ["transfers"] }
+            "url": {
+              "raw": "{{baseUrl}}/transfers",
+              "host": ["{{baseUrl}}"],
+              "path": ["transfers"]
+            }
           },
           "event": [
             {
               "listen": "test",
-              "script": { "exec": ["pm.test('Status 400', () => pm.response.to.have.status(400));"] }
+              "script": {
+                "exec": ["pm.test('Status 400', () => pm.response.to.have.status(400));"]
+              }
             }
           ]
         },
@@ -486,7 +561,10 @@
           "request": {
             "method": "PUT",
             "header": [{ "key": "Content-Type", "value": "application/json" }],
-            "body": { "mode": "raw", "raw": "{\n  \"amount\": 600000,\n  \"note\": \"Pindah ke dompet cash (revisi)\"\n}" },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"amount\": 600000,\n  \"note\": \"Pindah ke dompet cash (revisi)\"\n}"
+            },
             "url": {
               "raw": "{{baseUrl}}/transfers/{{transferId}}",
               "host": ["{{baseUrl}}"],

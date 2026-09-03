@@ -7,8 +7,8 @@ import { insertUser } from '../fixtures/user.fixture.js'
 import { insertCategory } from '../fixtures/category.fixture.js'
 import { getAccessToken, authCookieHeader } from '../fixtures/auth.fixture.js'
 import * as HttpStatusCodes from 'stoker/http-status-codes'
-import { insertAccount } from "../fixtures/account.fixture.js";
-import { insertTransaction } from "../fixtures/transaction.fixture.js";
+import { insertAccount } from '../fixtures/account.fixture.js'
+import { insertTransaction } from '../fixtures/transaction.fixture.js'
 
 describe('Category routes', () => {
   withCleanDb()

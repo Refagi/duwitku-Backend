@@ -24,7 +24,7 @@ export class TransferServices {
       where.amount = {
         ...(query.minAmount !== undefined ? { gte: query.minAmount } : {}),
         ...(query.maxAmount !== undefined ? { lte: query.maxAmount } : {}),
-      };
+      }
     }
 
     if (query.q) {

@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import type{ TokenTypeConfig } from '@/models/token.js';
+import { z } from 'zod'
+import type { TokenTypeConfig } from '@/models/token.js'
 // import type { PusherTypeConfig } from '@/models/pusher.model.js';
 
 const envSchema = z.object({
@@ -16,53 +16,51 @@ const envSchema = z.object({
   // PUSHER_KEY: z.string().trim().min(1, { message: 'PUSHER_KEY is required' }),
   // PUSHER_SECRET: z.string().trim().min(1, { message: 'PUSHER_SECRET is required' }),
   // PUSHER_CLUSTER: z.string().trim().min(1, { message: 'PUSHER_CLUSTER is required' }),
-
-});
+})
 
 class AppConfig {
-  private typeEnv: z.infer<typeof envSchema>;
-  private databaseUrl: string | null = null;
+  private typeEnv: z.infer<typeof envSchema>
+  private databaseUrl: string | null = null
 
   constructor() {
-    const parsedEnv = envSchema.safeParse(process.env);
+    const parsedEnv = envSchema.safeParse(process.env)
 
     if (!parsedEnv.success) {
-      console.error("Environment variables validation failed: ", z.treeifyError(parsedEnv.error));
-      throw new Error("Invalid environment configuration");
+      console.error('Environment variables validation failed: ', z.treeifyError(parsedEnv.error))
+      throw new Error('Invalid environment configuration')
     }
 
-    this.typeEnv= parsedEnv.data;
-    this.databaseUrl = this.typeEnv.DATABASE_URL;
- }
-
+    this.typeEnv = parsedEnv.data
+    this.databaseUrl = this.typeEnv.DATABASE_URL
+  }
 
   get env(): string {
-    return this.typeEnv.NODE_ENV;
+    return this.typeEnv.NODE_ENV
   }
 
   get port(): number {
-    return this.typeEnv.PORT;
+    return this.typeEnv.PORT
   }
 
   get database(): string {
-    if(!this.databaseUrl) {
-      throw new Error("Database URL is not initilized");
+    if (!this.databaseUrl) {
+      throw new Error('Database URL is not initilized')
     }
-    return this.databaseUrl!;
+    return this.databaseUrl!
   }
 
-  get jwt(): TokenTypeConfig{
+  get jwt(): TokenTypeConfig {
     return {
       secret: this.typeEnv.JWT_SECRET,
       accessExpirationMinutes: this.typeEnv.JWT_ACCESS_EXPIRATION_MINUTES,
       refreshExpirationDays: this.typeEnv.JWT_REFRESH_EXPIRATION_DAYS,
       resetPasswordExpirationMinutes: this.typeEnv.JWT_RESET_PASSWORD_EXPIRATION_MINUTES,
-      verifyEmailExpirationMinutes: this.typeEnv.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES
+      verifyEmailExpirationMinutes: this.typeEnv.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES,
     }
   }
   get fe(): string {
-    return this.typeEnv.FRONTEND_URL;
+    return this.typeEnv.FRONTEND_URL
   }
 }
 
-export const config = new AppConfig();
+export const config = new AppConfig()

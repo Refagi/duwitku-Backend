@@ -1,9 +1,15 @@
-import { faker } from "@faker-js/faker";
-import { prisma } from "../setup/db-setup.js";
+import { faker } from '@faker-js/faker'
+import { prisma } from '../setup/db-setup.js'
 
 export async function insertSavingsGoal(
   userId: string,
-  overrides: Partial<{ name: string; targetAmount: number; currentAmount: number; targetDate: Date; icon: string }> = {},
+  overrides: Partial<{
+    name: string
+    targetAmount: number
+    currentAmount: number
+    targetDate: Date
+    icon: string
+  }> = {},
 ) {
   return prisma.savingsGoal.create({
     data: {
@@ -14,5 +20,5 @@ export async function insertSavingsGoal(
       targetDate: overrides.targetDate,
       icon: overrides.icon,
     },
-  });
+  })
 }

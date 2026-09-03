@@ -1,4 +1,4 @@
-import type { z } from "zod";
-import type { dashboardChartQuerySchema } from "@/validations/dashboard.js";
+import type { z } from 'zod'
+import type { dashboardChartQuerySchema } from '@/validations/dashboard.js'
 
-export type DashboardChartQuery = z.infer<typeof dashboardChartQuerySchema>;
+export type DashboardChartQuery = z.infer<typeof dashboardChartQuerySchema>

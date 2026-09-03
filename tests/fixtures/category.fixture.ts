@@ -1,19 +1,26 @@
-import { faker } from "@faker-js/faker";
-import { prisma } from "../setup/db-setup.js";
+import { faker } from '@faker-js/faker'
+import { prisma } from '../setup/db-setup.js'
 
-export function buildCategory(overrides: Partial<{ name: string; type: "INCOME" | "EXPENSE"; icon: string }> = {}) {
+export function buildCategory(
+  overrides: Partial<{ name: string; type: 'INCOME' | 'EXPENSE'; icon: string }> = {},
+) {
   return {
     name: overrides.name ?? faker.commerce.department(),
-    type: overrides.type ?? "EXPENSE",
-    icon: overrides.icon ?? "wallet",
-  };
+    type: overrides.type ?? 'EXPENSE',
+    icon: overrides.icon ?? 'wallet',
+  }
 }
 
 export async function insertCategory(
   userId: string,
-  overrides: Partial<{ name: string; type: "INCOME" | "EXPENSE"; icon: string; isDefault: boolean }> = {},
+  overrides: Partial<{
+    name: string
+    type: 'INCOME' | 'EXPENSE'
+    icon: string
+    isDefault: boolean
+  }> = {},
 ) {
-  const data = buildCategory(overrides);
+  const data = buildCategory(overrides)
   return prisma.category.create({
     data: {
       userId,
@@ -22,5 +29,5 @@ export async function insertCategory(
       icon: data.icon,
       isDefault: overrides.isDefault ?? false,
     },
-  });
+  })
 }

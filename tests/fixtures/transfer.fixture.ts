@@ -1,4 +1,4 @@
-import { prisma } from "../setup/db-setup.js";
+import { prisma } from '../setup/db-setup.js'
 
 export async function insertTransfer(
   userId: string,
@@ -15,5 +15,5 @@ export async function insertTransfer(
       date: overrides.date ?? new Date(),
       note: overrides.note,
     },
-  });
+  })
 }

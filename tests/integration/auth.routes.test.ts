@@ -236,5 +236,4 @@ describe('Auth routes', () => {
       expect(res.status).toBe(HttpStatusCodes.UNAUTHORIZED)
     })
   })
-
 })
