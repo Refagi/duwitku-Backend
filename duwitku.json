@@ -1,0 +1,511 @@
+{
+  "info": {
+    "name": "Personal Finance API",
+    "description": "Koleksi testing untuk semua endpoint Tahap 1 (Auth, Accounts, Categories, Transactions, Transfers). Auth pakai httpOnly cookie - pastikan cookie jar Postman aktif (Settings > General > cookies).",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/v1" },
+    { "key": "accountId", "value": "" },
+    { "key": "secondAccountId", "value": "" },
+    { "key": "incomeCategoryId", "value": "" },
+    { "key": "expenseCategoryId", "value": "" },
+    { "key": "categoryId", "value": "" },
+    { "key": "transactionId", "value": "" },
+    { "key": "transferId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Refagi\",\n  \"email\": \"refagi@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/register", "host": ["{{baseUrl}}"], "path": ["auth", "register"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "pm.test('Cookie accessToken ada', () => {",
+                  "  pm.expect(pm.cookies.has('accessToken')).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"refagi@example.com\",\n  \"password\": \"password123\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/auth/login", "host": ["{{baseUrl}}"], "path": ["auth", "login"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Cookie accessToken & refreshToken ada', () => {",
+                  "  pm.expect(pm.cookies.has('accessToken')).to.be.true;",
+                  "  pm.expect(pm.cookies.has('refreshToken')).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Current User (Me)",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/auth/me", "host": ["{{baseUrl}}"], "path": ["auth", "me"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"] }
+            }
+          ]
+        },
+        {
+          "name": "Refresh Token",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/auth/refresh-token", "host": ["{{baseUrl}}"], "path": ["auth", "refresh-token"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "pm.test('Cookie ter-update', () => {",
+                  "  pm.expect(pm.cookies.has('accessToken')).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Google Sign-In (browser only)",
+          "request": {
+            "method": "GET",
+            "description": "TIDAK BISA ditest lewat Postman - Google menolak login dari automated client. Buka URL ini langsung di browser, login, lalu copy cookie accessToken/refreshToken dari DevTools ke Postman Cookie Manager kalau mau lanjut test endpoint lain dengan sesi Google.",
+            "url": { "raw": "{{baseUrl}}/auth/google", "host": ["{{baseUrl}}"], "path": ["auth", "google"] }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "url": { "raw": "{{baseUrl}}/auth/logout", "host": ["{{baseUrl}}"], "path": ["auth", "logout"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"] }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Accounts",
+      "item": [
+        {
+          "name": "List Accounts",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/accounts", "host": ["{{baseUrl}}"], "path": ["accounts"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "const accounts = res.data?.accounts ?? res;",
+                  "if (Array.isArray(accounts) && accounts.length > 0) {",
+                  "  pm.collectionVariables.set('accountId', accounts[0].id);",
+                  "  if (accounts.length > 1) pm.collectionVariables.set('secondAccountId', accounts[1].id);",
+                  "}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Account - BCA",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"BCA\",\n  \"type\": \"BANK\",\n  \"balance\": 4200000\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/accounts", "host": ["{{baseUrl}}"], "path": ["accounts"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "const res = pm.response.json();",
+                  "pm.collectionVariables.set('accountId', res.data.account.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Account - Cash",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Cash\",\n  \"type\": \"CASH\",\n  \"balance\": 500000\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/accounts", "host": ["{{baseUrl}}"], "path": ["accounts"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "const res = pm.response.json();",
+                  "pm.collectionVariables.set('secondAccountId', res.data.account.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Account",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"BCA Utama\"\n}" },
+            "url": {
+              "raw": "{{baseUrl}}/accounts/{{accountId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["accounts", "{{accountId}}"]
+            }
+          },
+          "event": [
+            { "listen": "test", "script": { "exec": ["pm.test('Status 200', () => pm.response.to.have.status(200));"] } }
+          ]
+        },
+        {
+          "name": "Delete Account",
+          "request": {
+            "method": "DELETE",
+            "description": "Hati-hati jalankan ini - pastikan dompet yang dihapus tidak dipakai transaksi/transfer manapun, kalau tidak akan dapat 409 (sesuai proteksi di AccountServices.remove).",
+            "url": {
+              "raw": "{{baseUrl}}/accounts/{{accountId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["accounts", "{{accountId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "List Categories",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/categories", "host": ["{{baseUrl}}"], "path": ["categories"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 200', () => pm.response.to.have.status(200));",
+                  "const res = pm.response.json();",
+                  "const categories = res.data?.categories ?? res;",
+                  "const income = categories.find(c => c.type === 'INCOME');",
+                  "const expense = categories.find(c => c.type === 'EXPENSE');",
+                  "if (income) pm.collectionVariables.set('incomeCategoryId', income.id);",
+                  "if (expense) pm.collectionVariables.set('expenseCategoryId', expense.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List Categories - Filter type=EXPENSE",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{baseUrl}}/categories?type=EXPENSE",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories"],
+              "query": [{ "key": "type", "value": "EXPENSE" }]
+            }
+          }
+        },
+        {
+          "name": "Create Category",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Zakat\",\n  \"type\": \"EXPENSE\"\n}" },
+            "url": { "raw": "{{baseUrl}}/categories", "host": ["{{baseUrl}}"], "path": ["categories"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "const res = pm.response.json();",
+                  "pm.collectionVariables.set('categoryId', res.data.category.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Update Category",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"Zakat & Sedekah\"\n}" },
+            "url": {
+              "raw": "{{baseUrl}}/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "{{categoryId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Category",
+          "request": {
+            "method": "DELETE",
+            "description": "Kalau target-nya kategori default (isDefault: true), harus dapat 409. Ganti {{categoryId}} ke kategori custom yang baru dibuat untuk test happy path.",
+            "url": {
+              "raw": "{{baseUrl}}/categories/{{categoryId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["categories", "{{categoryId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "List Transactions",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/transactions", "host": ["{{baseUrl}}"], "path": ["transactions"] }
+          }
+        },
+        {
+          "name": "List Transactions - Filter lengkap",
+          "request": {
+            "method": "GET",
+            "description": "Contoh semua filter dipakai bareng. Hapus query yang tidak perlu.",
+            "url": {
+              "raw": "{{baseUrl}}/transactions?type=EXPENSE&accountId={{accountId}}&categoryId={{expenseCategoryId}}&from=2026-08-01&to=2026-08-31&q=bakso&page=1&limit=20",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions"],
+              "query": [
+                { "key": "type", "value": "EXPENSE" },
+                { "key": "accountId", "value": "{{accountId}}" },
+                { "key": "categoryId", "value": "{{expenseCategoryId}}" },
+                { "key": "from", "value": "2026-08-01" },
+                { "key": "to", "value": "2026-08-31" },
+                { "key": "q", "value": "bakso" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "20" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create Transaction - Expense (Makan)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountId\": \"{{accountId}}\",\n  \"categoryId\": \"{{expenseCategoryId}}\",\n  \"type\": \"EXPENSE\",\n  \"amount\": 25000,\n  \"date\": \"2026-08-02\",\n  \"note\": \"Bakso Pak Darto\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/transactions", "host": ["{{baseUrl}}"], "path": ["transactions"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "const res = pm.response.json();",
+                  "pm.collectionVariables.set('transactionId', res.data.transaction.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Transaction - Income (Gaji)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountId\": \"{{accountId}}\",\n  \"categoryId\": \"{{incomeCategoryId}}\",\n  \"type\": \"INCOME\",\n  \"amount\": 5000000,\n  \"date\": \"2026-08-01\",\n  \"note\": \"Gaji bulan Agustus\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/transactions", "host": ["{{baseUrl}}"], "path": ["transactions"] }
+          }
+        },
+        {
+          "name": "Update Transaction",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 30000,\n  \"note\": \"Bakso Pak Darto (porsi besar)\"\n}" },
+            "url": {
+              "raw": "{{baseUrl}}/transactions/{{transactionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions", "{{transactionId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Transaction",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/transactions/{{transactionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["transactions", "{{transactionId}}"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transfers",
+      "item": [
+        {
+          "name": "List Transfers",
+          "request": {
+            "method": "GET",
+            "url": { "raw": "{{baseUrl}}/transfers", "host": ["{{baseUrl}}"], "path": ["transfers"] }
+          }
+        },
+        {
+          "name": "Create Transfer",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fromAccountId\": \"{{accountId}}\",\n  \"toAccountId\": \"{{secondAccountId}}\",\n  \"amount\": 500000,\n  \"date\": \"2026-08-03\",\n  \"note\": \"Pindah ke dompet cash\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/transfers", "host": ["{{baseUrl}}"], "path": ["transfers"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Status 201', () => pm.response.to.have.status(201));",
+                  "const res = pm.response.json();",
+                  "pm.collectionVariables.set('transferId', res.data.transfer.id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Transfer - Saldo tidak cukup (harus 400)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "description": "Test negative case - amount sengaja dibuat sangat besar untuk memicu error 'Saldo dompet asal tidak mencukupi'.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fromAccountId\": \"{{accountId}}\",\n  \"toAccountId\": \"{{secondAccountId}}\",\n  \"amount\": 999999999,\n  \"date\": \"2026-08-03\",\n  \"note\": \"Test saldo tidak cukup\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/transfers", "host": ["{{baseUrl}}"], "path": ["transfers"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": ["pm.test('Status 400', () => pm.response.to.have.status(400));"] }
+            }
+          ]
+        },
+        {
+          "name": "Create Transfer - Dompet sama (harus 400)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "description": "Test negative case - fromAccountId sama dengan toAccountId, harus kena validasi Zod refine().",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fromAccountId\": \"{{accountId}}\",\n  \"toAccountId\": \"{{accountId}}\",\n  \"amount\": 10000,\n  \"date\": \"2026-08-03\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/transfers", "host": ["{{baseUrl}}"], "path": ["transfers"] }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": { "exec": ["pm.test('Status 400', () => pm.response.to.have.status(400));"] }
+            }
+          ]
+        },
+        {
+          "name": "Update Transfer",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": { "mode": "raw", "raw": "{\n  \"amount\": 600000,\n  \"note\": \"Pindah ke dompet cash (revisi)\"\n}" },
+            "url": {
+              "raw": "{{baseUrl}}/transfers/{{transferId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["transfers", "{{transferId}}"]
+            }
+          }
+        },
+        {
+          "name": "Delete Transfer",
+          "request": {
+            "method": "DELETE",
+            "url": {
+              "raw": "{{baseUrl}}/transfers/{{transferId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["transfers", "{{transferId}}"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "NodeNext",
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["node", "bun-types"],
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "paths": {
+      "@/*": ["./src/*"],
+      "~/*": ["./*"],
+    },
+    "rootDir": ".",
+    "outDir": "./dist"
+  },
+  "include": [
+    "src/**/*",
+    "tests/**/*",
+    "prisma/**/*",
+    "*.ts",
+    "eslint.config.*"
+  ],
+  "exclude": ["node_modules"]
+}
