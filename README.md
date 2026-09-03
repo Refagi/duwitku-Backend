@@ -1,3 +1,5 @@
+![CI](https://github.com/Refagi/duwitku-Backend/actions/workflows/ci.yml/badge.svg)
+
 Prerequisites:
 
 - [Vercel CLI](https://vercel.com/docs/cli) installed globally
