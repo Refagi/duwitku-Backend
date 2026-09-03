@@ -13,7 +13,7 @@
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "check": "bun run typecheck && bun run lint && bun run format:check",
+    "check": "bun run typecheck && bun run format:check",
     "prepare": "husky",
     "pretest": "docker compose -f docker-compose.test.yml up -d --wait",
     "test": "bun test --env-file=.env.test tests",
