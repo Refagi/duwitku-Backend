@@ -8,7 +8,7 @@
     "allowImportingTsExtensions": true,
     "moduleDetection": "force",
     "noEmit": true,
-    "typeRoots": ["./node_modules/@types"],
+    "types": ["bun", "node", "pg"],
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
     "paths": {
