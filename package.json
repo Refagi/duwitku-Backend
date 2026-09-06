@@ -39,18 +39,18 @@
     "pg": "^8.22.0",
     "stoker": "^2.0.1",
     "xss": "^1.0.15",
-    "zod": "^4.4.3"
+    "zod": "^4.4.3",
+    "typescript": "^7.0.2",
+    "@types/pg": "^8.20.3",
+    "@types/bun": "^1.4.0",
+    "@types/node": "^26.4.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.6.0",
     "@testcontainers/postgresql": "^12.1.0",
-    "@types/pg": "^8.20.3",
-    "@types/bun": "^1.4.0",
-    "@types/node": "^26.4.1",
     "husky": "^9.1.7",
     "lint-staged": "^17.3.0",
     "prettier": "^3.9.6",
-    "tsx": "^4.23.0",
-    "typescript": "^7.0.2"
+    "tsx": "^4.23.0"
   }
 }
