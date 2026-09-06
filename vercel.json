@@ -1,5 +1,5 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "bunVersion": "1.x",
-  "buildCommand": "bunx prisma generate && echo '--- @types check ---' && ls -la node_modules/@types/ && ls -la node_modules/@types/bun && ls -la node_modules/@types/node && ls -la node"
+  "buildCommand": "bunx prisma generate"
 }
