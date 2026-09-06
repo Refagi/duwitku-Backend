@@ -7,7 +7,7 @@ export const createTransactionSchema = z.object({
   amount: z.number().positive('Nominal harus lebih dari 0'),
   date: z.string(),
   note: z.string().optional(),
-  attachmentUrl: z.string().url().optional(),
+  attachmentUrl: z.url().optional(),
 })
 
 export const updateTransactionSchema = createTransactionSchema.partial()
