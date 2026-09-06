@@ -4,7 +4,7 @@ import type {
   updateTransactionSchema,
   transactionIdParamSchema,
   transactionQuerySchema,
-} from '@/validations/transaction.ts'
+} from '@/validations/transaction.js'
 
 export type CreateTransactionBody = z.infer<typeof createTransactionSchema>
 export type UpdateTransactionBody = z.infer<typeof updateTransactionSchema>
