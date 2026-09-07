@@ -42,7 +42,7 @@ googleAuthRoutes.get('/', async (c) => {
   setAuthCookies(c, tokens)
   logger.info('User logged in via Google', { userId: user.id })
 
-  return c.redirect(`${process.env.FRONTEND_URL}/auth/google/callback`)
+  return c.redirect(`${process.env.FRONTEND_URL}/dashboard`)
 })
 
 export default googleAuthRoutes
